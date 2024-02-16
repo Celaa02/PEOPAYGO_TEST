@@ -1,0 +1,16 @@
+button.center {
+    width: 120px;
+    height: 40px; /* Para que no se rompa en dos líneas, y lo translade tal cual. */
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background-color:#ff8800;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+
+.form-control {
+    font-family: system-ui, sans-serif;
+    font-size: 1rem;
+    font: weight 3px;
+    line-height: 2.1;
+  } 
