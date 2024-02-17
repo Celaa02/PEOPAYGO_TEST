@@ -48,6 +48,7 @@ function EmployeeFormPage(){
                 />
                 <input
                 type="number"
+                min="12"
                 placeholder="Hourly_rate"
                 { ...register("Hourly_rate")}
                 className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
@@ -56,12 +57,14 @@ function EmployeeFormPage(){
                 
                 <input
                 type="number"
+                min="1"
                 placeholder="Hours"
                 { ...register("hours")}
                 className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                 />
                 <input
                 type="number"
+                min="100"
                 placeholder="total_pay"
                 { ...register("total_pay")}
                 className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"

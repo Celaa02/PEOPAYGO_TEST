@@ -8,6 +8,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SigninAuthDto } from './dto/signin-auth.dto';
@@ -21,6 +22,7 @@ import { jwtConstants } from './auth.constans';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(
     private readonly authService: AuthService,
     private readonly authGuard: AuthGuard,
@@ -51,11 +53,14 @@ export class AuthController {
               is_admin: result.data.is_admin,
             },
           });
+        this.logger.log('The Login has been successfully');
       } else {
         if (result.msg == 'User not found') {
           res.status(403).json(['User not found']);
+          this.logger.debug('User not found');
         } else if (result.msg == 'Password incorrect') {
           res.status(409).json(['Password incorrect']);
+          this.logger.debug('Password incorrect');
         }
       }
     } catch (error) {
@@ -81,11 +86,14 @@ export class AuthController {
             is_admin: result.data.is_admin,
           },
         });
+      this.logger.log('The signup has been successfully');
     } else {
       if (result.msg == 'Some params is null') {
         res.status(403).json(['Some params is null']);
+        this.logger.debug('Some params is null');
       } else if (result.msg == 'User already exists') {
         res.status(409).json(['User already exists']);
+        this.logger.debug('User already exists');
       }
     }
   }
@@ -94,6 +102,7 @@ export class AuthController {
   async finUser(@Req() req, @Res() res: Response) {
     if (!req.headers.cookie.slice(6)) {
       res.status(401).json(['Unauthorized']);
+      this.logger.debug('Unauthorized');
     }
     try {
       const payload = await this.jwtService.verifyAsync(
@@ -109,6 +118,7 @@ export class AuthController {
         email: result.data.email,
         is_admin: result.data.is_admin,
       });
+      this.logger.log('The User has been validated');
     } catch (error) {
       res.status(401).json(['Unauthorized']);
     }
@@ -118,9 +128,10 @@ export class AuthController {
   logout(@Request() req): any {
     try {
       req.session = null;
+      this.logger.log('The user session has ended');
       return { msg: 'The user session has ended' };
     } catch (error) {
-      console.log(error);
+      this.logger.debug('Problem with session ended');
     }
   }
 }
